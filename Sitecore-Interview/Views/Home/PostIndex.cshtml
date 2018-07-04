@@ -10,15 +10,27 @@
     .validation-summary-errors ul li {
         color: #ff0000;
     }
+
+    .badge-secondary-custom {
+        background-color: #007bff !important;
+        width: 100% !important;
+        font-size: 24px !important;
+    }
+    #data-table {
+        width: 100%;
+        border-color: #ccc;
+        border-width: 1px;
+        border-style: dashed;
+    }
 </style>
 @section CSS
 {
     <link href="~/Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/DataTables/css/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
 }
-<h1>SEO Analyzer</h1>
-<div class="row">
-    <div class="col">
+<h1 class="badge badge-secondary badge-secondary-custom">SEO Analyzer</h1>
+<div class="row card">
+    <div class="col card-body">
         @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form" }))
         {
             @Html.AntiForgeryToken()
@@ -30,9 +42,12 @@
             <div class="form-group">
                 @Html.LabelFor(Model => Model.filterStopWords)
                 @Html.TextBoxFor(Model => Model.filterStopWords, null, new { @class = "form-control" })
+                <div class="clearfix"></div>
+                <span class="badge badge-secondary">*Filter Words (separated by commas)</span>
             </div>
-            <div class="form-group form-check">
 
+          
+            <div class="form-group form-check">
 
                 @Html.CheckBoxFor(Model => Model.isCountOfMetaKeywordsRequired, new { @class = "form-check-input" })
                 @Html.LabelFor(Model => Model.isCountOfMetaKeywordsRequired, new { @class = "form-check-label" })
@@ -46,47 +61,55 @@
             <input type="submit" value="Submit" id="btnSubmit" class="btn btn-primary" />
             <hr />
 
-            <div class="row">
-                <div class="col">
-                    <table id="data-table" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Word</th>
-                                <th>Total Occurance</th>
-                                <th>Category (Text/Meta Tag/Page/External Link)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                            </tr>
-                            <tr>
-                                <td>Garrett Winters</td>
-                                <td>Accountant</td>
-                                <td>Tokyo</td>
-                            </tr>
-                            <tr>
-                                <td>Ashton Cox</td>
-                                <td>Junior Technical Author</td>
-                                <td>San Francisco</td>
+            if (Model.seoAnalyzer.Rows.Count > 0)
+            {
+                <div class="row">
+                    <div class="col">
+                        <table id="data-table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Word</th>
+                                    <th>Total Occurance</th>
+                                    <th>Category (Text/Meta Tag/Page/External Link)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Word</th>
-                                <th>Total Occurance</th>
-                                <th>Category</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                @foreach (System.Data.DataRow row in Model.seoAnalyzer.Rows)
+                                {
+                                    <tr>
+                                        <td>@row["word"]</td>
+                                        <td>@row["total"]</td>
+                                        <td>@row["category"]</td>
+                                    </tr>
+                                }
+
+
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Word</th>
+                                    <th>Total Occurance</th>
+                                    <th>Category</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            }
+
+            if (!String.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+
+            <h1>@ViewBag.Debug</h1>
 
         }
-        </div>
+    </div>
 </div>
 
 

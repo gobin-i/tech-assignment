@@ -10,8 +10,13 @@
     .validation-summary-errors ul li {
         color: #ff0000;
     }
+    .badge-secondary-custom {
+        background-color: #007bff !important;
+        width: 100% !important;
+        font-size:24px !important;
+    }
 </style>
-<h1>SEO Analyzer</h1>
+<h1 class="badge badge-secondary badge-secondary-custom">SEO Analyzer</h1>
 <div class="row">
     <div class="col">
         @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form" }))
@@ -27,13 +32,10 @@
             <div class="form-group">
                 @Html.LabelFor(Model => Model.filterStopWords)
                 @Html.TextBoxFor(Model => Model.filterStopWords, null, new { @class = "form-control" })
-                <span>*Filter Words (separated by commas)</span>
+                <div class="clearfix"></div>
+                <span class="badge badge-secondary">*Filter Words (separated by commas)</span>
             </div>
-            <div class="form-group form-check">
-                @Html.CheckBoxFor(Model => Model.isUrlToScrape, new { @class = "form-check-input" })
-                @Html.LabelFor(Model => Model.isUrlToScrape, new { @class = "form-check-label" })
-
-            </div>
+       
             <div class="form-group form-check">
 
 

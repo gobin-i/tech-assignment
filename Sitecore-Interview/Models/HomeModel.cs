@@ -20,6 +20,7 @@ namespace Sitecore_Interview.Models
         public string textContent { get; set; }
 
         [Display(Name = "Filter Words (separated by commas)", Description = "(e.g. ‘or’, ‘and’, ‘a’, ‘the’ etc),")]
+        [Required(AllowEmptyStrings = false)]
         public string filterStopWords { get; set; }
 
         [Display(Name = "Do you want to count number occurance of words in keyword meta tag?", Description = "")]
@@ -28,8 +29,6 @@ namespace Sitecore_Interview.Models
         [Display(Name = "Do you want to count number of occurance of external links in scraped URL", Description = "")]
         public bool isCountOfExternalLinksRequired { get; set; }
 
-        [Display(Name = "Do you want to scrape URL?", Description = "")]
-        public bool isUrlToScrape { get; set; }
 
         public HomeModel() {
             //Init DataTable
@@ -76,9 +75,11 @@ namespace Sitecore_Interview.Models
             return Uri.TryCreate(url, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
         }
 
+        
         private void  initDataTable() {
 
             //Init DataTable - to store data
+            seoAnalyzer = new DataTable();
             DataColumn columnWord = new DataColumn("word", typeof(string));
             DataColumn columnTotal = new DataColumn("total", typeof(int));
             DataColumn columnCategory = new DataColumn("category", typeof(string));
@@ -88,36 +89,32 @@ namespace Sitecore_Interview.Models
 
         }
 
-        public DataTable getSeoAnalyzer() {
-
-            return seoAnalyzer;
-        }
-
         public bool upsertWord(string word, string category,int count)
         {
-            var result = from row in seoAnalyzer.AsEnumerable() where row.Field<string>("word") == word && row.Field<string>("category") == category select row;
-            
-
-            if (result != null)
+            if (seoAnalyzer != null)
             {
-                if (result.Count() > 0)
+                var result = from row in seoAnalyzer.AsEnumerable() where row.Field<string>("word") == (word != null ? word : "N/A") && row.Field<string>("category") == (category != null ? category : "N/A") select row;
+
+                if (result != null)
                 {
-                    //Exist and Update
-                   
-                    result.FirstOrDefault()["total"] = (int)result.FirstOrDefault()["total"] + count;
-                    result.FirstOrDefault().AcceptChanges();
+                    if (result.Count() > 0)
+                    {
+                        //Exist and Update
+                        result.FirstOrDefault()["total"] = (int)result.FirstOrDefault()["total"] + count;
+                        result.FirstOrDefault().AcceptChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        //Add New
+                        seoAnalyzer.Rows.Add(word, count, category);
+                        return true;
+                    }
                 }
-                else {
-                    //Add New
-                    seoAnalyzer.Rows.Add(word, count, category);
-                }
-
 
 
             }
-            else {
-                seoAnalyzer.Rows.Add(word, count, category);
-            }
+
             return false;
         }
 
