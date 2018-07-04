@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore-Interview", "Sitecore-Interview\Sitecore-Interview.csproj", "{B2C5AA58-4B77-4C0C-A426-F9A36BC77A4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore-Interview.Tests", "Sitecore-Interview.Tests\Sitecore-Interview.Tests.csproj", "{9781EB82-5230-4752-AD0A-18FB087BF5C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2C5AA58-4B77-4C0C-A426-F9A36BC77A4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C5AA58-4B77-4C0C-A426-F9A36BC77A4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C5AA58-4B77-4C0C-A426-F9A36BC77A4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C5AA58-4B77-4C0C-A426-F9A36BC77A4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9781EB82-5230-4752-AD0A-18FB087BF5C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9781EB82-5230-4752-AD0A-18FB087BF5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9781EB82-5230-4752-AD0A-18FB087BF5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9781EB82-5230-4752-AD0A-18FB087BF5C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43ADF280-55F4-4031-B320-B1EEC4BB2623}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,52 @@
+﻿@model Sitecore_Interview.Models.HomeModel
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "SEO Analyzer";
+}
+<style>
+    .validation-summary-errors ul li {
+        color: #ff0000;
+    }
+</style>
+<h1>SEO Analyzer</h1>
+<div class="row">
+    <div class="col">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(false)
+
+            <div class="form-group">
+                @Html.LabelFor(Model => Model.textContent)
+                @Html.TextAreaFor(Model => Model.textContent, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(Model => Model.filterStopWords)
+                @Html.TextBoxFor(Model => Model.filterStopWords, null, new { @class = "form-control" })
+                <span>*Filter Words (separated by commas)</span>
+            </div>
+            <div class="form-group form-check">
+                @Html.CheckBoxFor(Model => Model.isUrlToScrape, new { @class = "form-check-input" })
+                @Html.LabelFor(Model => Model.isUrlToScrape, new { @class = "form-check-label" })
+
+            </div>
+            <div class="form-group form-check">
+
+
+                @Html.CheckBoxFor(Model => Model.isCountOfMetaKeywordsRequired, new { @class = "form-check-input" })
+                @Html.LabelFor(Model => Model.isCountOfMetaKeywordsRequired, new { @class = "form-check-label" })
+
+            </div>
+            <div class="form-group form-check">
+                @Html.CheckBoxFor(Model => Model.isCountOfExternalLinksRequired, new { @class = "form-check-input" })
+                @Html.LabelFor(Model => Model.isCountOfExternalLinksRequired, new { @class = "form-check-label" })
+
+            </div>
+            <input type="submit" value="Submit" id="btnSubmit" class="btn btn-primary" />
+        }
+    </div>
+</div>

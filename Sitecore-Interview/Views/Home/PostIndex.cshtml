@@ -1,0 +1,126 @@
+﻿@model Sitecore_Interview.Models.HomeModel
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "SEO Analyzer";
+}
+<style>
+    .validation-summary-errors ul li {
+        color: #ff0000;
+    }
+</style>
+@section CSS
+{
+    <link href="~/Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/DataTables/css/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
+}
+<h1>SEO Analyzer</h1>
+<div class="row">
+    <div class="col">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(Model => Model.textContent)
+                @Html.TextAreaFor(Model => Model.textContent, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(Model => Model.filterStopWords)
+                @Html.TextBoxFor(Model => Model.filterStopWords, null, new { @class = "form-control" })
+            </div>
+            <div class="form-group form-check">
+
+
+                @Html.CheckBoxFor(Model => Model.isCountOfMetaKeywordsRequired, new { @class = "form-check-input" })
+                @Html.LabelFor(Model => Model.isCountOfMetaKeywordsRequired, new { @class = "form-check-label" })
+
+            </div>
+            <div class="form-group form-check">
+                @Html.CheckBoxFor(Model => Model.isCountOfExternalLinksRequired, new { @class = "form-check-input" })
+                @Html.LabelFor(Model => Model.isCountOfExternalLinksRequired, new { @class = "form-check-label" })
+
+            </div>
+            <input type="submit" value="Submit" id="btnSubmit" class="btn btn-primary" />
+            <hr />
+
+            <div class="row">
+                <div class="col">
+                    <table id="data-table" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Word</th>
+                                <th>Total Occurance</th>
+                                <th>Category (Text/Meta Tag/Page/External Link)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tiger Nixon</td>
+                                <td>System Architect</td>
+                                <td>Edinburgh</td>
+                            </tr>
+                            <tr>
+                                <td>Garrett Winters</td>
+                                <td>Accountant</td>
+                                <td>Tokyo</td>
+                            </tr>
+                            <tr>
+                                <td>Ashton Cox</td>
+                                <td>Junior Technical Author</td>
+                                <td>San Francisco</td>
+
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Word</th>
+                                <th>Total Occurance</th>
+                                <th>Category</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+        }
+        </div>
+</div>
+
+
+        @section Scripts
+{
+            <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                    //$('#data-table').DataTable();
+                    $('#data-table').DataTable({
+                        initComplete: function () {
+                            this.api().columns().every(function () {
+                                var column = this;
+                                var select = $('<select><option value=""></option></select>')
+                                    .appendTo($(column.footer()).empty())
+                                    .on('change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                    });
+
+                                column.data().unique().sort().each(function (d, j) {
+                                    select.append('<option value="' + d + '">' + d + '</option>')
+                                });
+                            });
+                        }
+                    });
+                });
+            </script>
+        }
+
+
