@@ -95,13 +95,25 @@ namespace Sitecore_Interview.Models
 
         public bool upsertWord(string word, string category,int count)
         {
-
-            var result = from DataRow entry in seoAnalyzer.Rows where entry.Field<string>("word") == word && entry.Field<string>("category")==category select entry;
+            var result = from row in seoAnalyzer.AsEnumerable() where row.Field<string>("word") == word && row.Field<string>("category") == category select row;
+            
 
             if (result != null)
             {
-                //Exist
-               
+                if (result.Count() > 0)
+                {
+                    //Exist and Update
+                   
+                    result.FirstOrDefault()["total"] = (int)result.FirstOrDefault()["total"] + count;
+                    result.FirstOrDefault().AcceptChanges();
+                }
+                else {
+                    //Add New
+                    seoAnalyzer.Rows.Add(word, count, category);
+                }
+
+
+
             }
             else {
                 seoAnalyzer.Rows.Add(word, count, category);

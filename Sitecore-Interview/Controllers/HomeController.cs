@@ -25,9 +25,6 @@ namespace Sitecore_Interview.Controllers
         {
             if (ModelState.IsValid)
             {
-
-               
-
                 //Check if URL to scrape option is selected
                 if (homeModel.isUrlToScrape)
                 {
