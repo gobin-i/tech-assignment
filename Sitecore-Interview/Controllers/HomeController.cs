@@ -10,19 +10,15 @@ using HtmlAgilityPack;
 using Sitecore_Interview.Models;
 namespace Sitecore_Interview.Controllers
 {
+    /// <summary>
+    /// Home Controller Class will handle the HTTP request that triggered from user's browser/action based on HTTP VERB and routes
+    /// </summary>
     public class HomeController : Controller
     {
 
-        //Default Re-Direction
-
-        /*[Route("*")]
-        public ActionResult Default()
-        {
-
-            return View("Index");
-        }
-        */
-        // GET: Home
+        /// <returns>
+        /// Will returns default view when user browser to homepage - Only accessible via HTTP GET verb
+        /// </returns>
         [HttpGet]
         public ActionResult Index()
         {
@@ -30,25 +26,30 @@ namespace Sitecore_Interview.Controllers
             return View(homeModel);
         }
 
-        //POST: Data
+        /// <summary>
+        /// Return view after postback - only accessible via HTTP POST verb
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(HomeModel homeModel)
         {
            
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) //To check if the submitted model is valid in terms of field requirements
             {
                 //Check if the input is a valid URL
                 Uri uriResult;
                 bool isValidUrl = Uri.TryCreate(homeModel.textContent, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
-         
-                if (isValidUrl) {
-                    homeModel.textContent = homeModel.getStringFromUrl(homeModel.textContent);
+                //If the input provided is valid URL, the content input will be the URL
+                if (isValidUrl) 
+                {
+                    homeModel.textContent = homeModel.getStringFromUrl(homeModel.textContent); //For valid url as content input, we will scrape the content
                 }
 
+                //Check if the content input is empty
                 if (!string.IsNullOrEmpty(homeModel.textContent))
                 {
+                    //Check the occurrence of stopword in the content input
                     foreach (string stopWord in homeModel.filterStopWords.Split(','))
                     {
                         MatchCollection matchColl = Regex.Matches(homeModel.textContent, @"\b" + stopWord + @"\b", RegexOptions.IgnoreCase);
@@ -57,6 +58,7 @@ namespace Sitecore_Interview.Controllers
                         homeModel.upsertWord((stopWord!=null?stopWord:"N/A"), (isValidUrl ? "WEBPAGE" : "TEXT"), (matchColl!=null?matchColl.Count:0));
                     }
 
+                    //If the content input is a valid URL, then scrape the url
                     if (isValidUrl)
                     {
                         var doc = new HtmlDocument();

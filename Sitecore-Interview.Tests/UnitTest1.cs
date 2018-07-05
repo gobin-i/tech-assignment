@@ -7,6 +7,9 @@ namespace Sitecore_Interview.Tests
     [TestClass]
     public class UnitTest1
     {
+        /// <summary>
+        /// Unit test to test with TEXT
+        /// </summary>
         [TestMethod]
         public void TestHomeModelTextContentView()
         {
@@ -16,6 +19,9 @@ namespace Sitecore_Interview.Tests
             Assert.AreEqual("PostIndex", result.ViewName);
         }
 
+        /// <summary>
+        /// Unit test to test with URL
+        /// </summary>
         [TestMethod]
         public void TestHomeModelUrlView()
         {

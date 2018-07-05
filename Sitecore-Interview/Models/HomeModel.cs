@@ -12,37 +12,50 @@ namespace Sitecore_Interview.Models
     public class HomeModel
     {
 
-        //Private 
+        /// <value>Get/Set the value of words that has been analyzed</value>
         public DataTable seoAnalyzer { get; set; }
 
+        /// <value>Get/Set the value of input (text/url) </value>
         [Display(Name ="Content/Single URL",Description = "")]
         [Required(AllowEmptyStrings =false)]
         public string textContent { get; set; }
 
+        /// <value>Get/Set the value of filter words (separated by commas)</value>
         [Display(Name = "Filter Words (separated by commas)", Description = "(e.g. ‘or’, ‘and’, ‘a’, ‘the’ etc),")]
         [Required(AllowEmptyStrings = false)]
         public string filterStopWords { get; set; }
 
+        /// <value>Get/Set the flag if the SEO analyze need to process the keywords meta tag</value>
         [Display(Name = "Do you want to count number occurance of words in keyword meta tag?", Description = "")]
         public bool isCountOfMetaKeywordsRequired { get; set; }
 
+        /// <value>Get/Set the flag if the SEO analyze need to process the external links found in page (inclusive of relative path)</value>
         [Display(Name = "Do you want to count number of occurance of external links in scraped URL", Description = "")]
         public bool isCountOfExternalLinksRequired { get; set; }
 
-
+        /// <summary>
+        /// Contructor with DataTable initialization to prepare in-memory data storage
+        /// </summary>
         public HomeModel() {
             //Init DataTable
             initDataTable();
         }
+
+        /// <summary>
+        /// Contructor with parameters with DataTable initialization to prepare in-memory data storage
+        /// </summary>
         public HomeModel(string textContent,string filterStopWords,bool isCountOfMetaKeywordsRequired,bool isCountOfExternalLinksRequired) {
 
             this.textContent = textContent;
             this.filterStopWords = filterStopWords;
             this.isCountOfMetaKeywordsRequired = isCountOfMetaKeywordsRequired;
             this.isCountOfExternalLinksRequired =isCountOfExternalLinksRequired;
-
+            initDataTable();
         }
 
+        /// <summary>
+        /// Contructor with parameters with DataTable initialization to prepare in-memory data storage
+        /// </summary>
         public string getStringFromUrl(string url)
         {
             WebClient client = new WebClient();
@@ -69,13 +82,9 @@ namespace Sitecore_Interview.Models
             return null;
         }
 
-        public bool isValidUrl(string url) {
-
-            Uri uriResult;
-            return Uri.TryCreate(url, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
-        }
-
-        
+        /// <summary>
+        /// Initialize DataTable to contain three columns namely Word, Total, and Category
+        /// </summary>
         private void  initDataTable() {
 
             //Init DataTable - to store data
@@ -89,6 +98,9 @@ namespace Sitecore_Interview.Models
 
         }
 
+        /// <summary>
+        /// This method will Insert if the word matched to the category doesn't exist and update the total count if it does match
+        /// </summary>
         public bool upsertWord(string word, string category,int count)
         {
             if (seoAnalyzer != null)
